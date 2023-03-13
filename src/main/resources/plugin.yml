@@ -1,0 +1,11 @@
+name: MilestoneRewards
+version: '${project.version}'
+main: eu.maxpi.fiverr.milestonerewards.MilestoneRewards
+api-version: 1.19
+authors: [ Macslolz ]
+description: Plugin to add configurable rewards on milestones
+website: fiverr.com/macslolz
+
+commands:
+  milestone:
+    description: Milestone

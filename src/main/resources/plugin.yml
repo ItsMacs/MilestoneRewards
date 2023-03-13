@@ -9,3 +9,5 @@ website: fiverr.com/macslolz
 commands:
   milestone:
     description: Milestone
+  redeem:
+    description: Redeem

@@ -2,3 +2,28 @@
 
 lang:
   no-permission: "&cYou don't have permission!"
+  no-milestone: "&cThis milestone doesn't exist!"
+  no-requirement: "&cThis type of requirement doesn't exist!"
+  requirement-added: "&aRequirement added!"
+  reward-added: "&aReward added!"
+  milestone-usage: "&6Usage:\n&b/milestone create <name>: &eCreates a new milestone\n&b/milestone delete <name>: &eDeletes a milestone\n&b/minestone manage <name>: &eManage the milestone settings (requirements and rewards)"
+  milestone-manage-usage: "&6Usage:\n&b/milestone manage <name> rewards: &eManages rewards for this milestone\n&b/milestone manage <name> requirements: &eManages requirements to complete this milestone"
+  milestone-already-exists: "&cThis milestone already exists!"
+  milestone-rewards-usage: "&6Usage:\n&b/milestone manage <name> rewards <command / item> [command without /]"
+  milestone-requirements-usage: "&6Usage: &b/milestone manage <name> requirements <requirement type> [requirement args if any]"
+  milestone-created: "&aMilestone created successfully!"
+  milestone-removed: "&aMilestone removed successfully!"
+  missing-out: "&cYou're missing out on some physical rewards! Free up some space!"
+  missing-out-title: "&cHOI!"
+  missing-out-subtitle: "&7Free up some space!"
+  redeemed: "&aYou redeemed all the leftover items!"
+  redeemed-not-full: "&aYou redeemed some items, but there's still some left! Free up some more space to be able to get them all!"
+  milestone-reached: "&aMilestone &e%milestone% &areached!"
+  milestone-reached-subtitle: "&7Good job!"
+  milestone-reached-title: "&2Milestone reached!"
+
+#Amount of seconds between each "clear inventory" message spam
+spam-interval: 120
+
+#Seconds after which the playtime stops ticking for AFK players
+afk-threshold: 30

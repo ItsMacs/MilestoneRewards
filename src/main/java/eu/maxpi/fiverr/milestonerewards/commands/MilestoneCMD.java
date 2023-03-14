@@ -3,11 +3,14 @@ package eu.maxpi.fiverr.milestonerewards.commands;
 import eu.maxpi.fiverr.milestonerewards.MilestoneRewards;
 import eu.maxpi.fiverr.milestonerewards.milestones.Milestone;
 import eu.maxpi.fiverr.milestonerewards.milestones.requirements.MilestoneRequirement;
+import eu.maxpi.fiverr.milestonerewards.utils.PlaytimeManager;
 import eu.maxpi.fiverr.milestonerewards.utils.PluginLoader;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 public class MilestoneCMD implements CommandExecutor {
 
@@ -37,6 +40,45 @@ public class MilestoneCMD implements CommandExecutor {
 
                 MilestoneRewards.milestones.put(args[1].toLowerCase(), new Milestone(args[1]));
                 sender.sendMessage(PluginLoader.lang.get("milestone-created"));
+            }
+
+            case "reload" -> {
+                PlaytimeManager.afkCountdown.clear();
+                PlaytimeManager.playTime.clear();
+                PlaytimeManager.prevLoc.clear();
+
+                MilestoneRewards.milestones.clear();
+                MilestoneRewards.awaiting.clear();
+
+
+                PluginLoader.lang.clear();
+                PluginLoader.load();
+
+                sender.sendMessage(PluginLoader.lang.get("reloaded"));
+            }
+
+            case "setplaytime" -> {
+                if(args.length != 3){
+                    sender.sendMessage(PluginLoader.lang.get("milestone-usage"));
+                    return true;
+                }
+
+                Player p = Bukkit.getPlayer(args[1]);
+                if(p == null){
+                    sender.sendMessage(PluginLoader.lang.get("no-player"));
+                    return true;
+                }
+
+                long l;
+                try{
+                    l = Long.parseLong(args[2]);
+                }catch (Exception e){
+                    sender.sendMessage(PluginLoader.lang.get("milestone-usage"));
+                    return true;
+                }
+
+                PlaytimeManager.playTime.put(p.getUniqueId().toString(), l);
+                sender.sendMessage(PluginLoader.lang.get("playtime-set"));
             }
 
             case "delete" -> {

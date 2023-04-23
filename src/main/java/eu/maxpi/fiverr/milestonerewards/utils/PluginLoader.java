@@ -30,11 +30,11 @@ public class PluginLoader {
         afkThreshold = config.getLong("afk-threshold");
 
         YamlConfiguration storage = YamlConfiguration.loadConfiguration(new File(MilestoneRewards.getInstance().getDataFolder() + "/storage.yml"));
-        storage.getKeys(false).forEach(s -> {
+        if(storage.contains("milestones")) storage.getConfigurationSection("milestones").getKeys(false).forEach(s -> {
             if(s.equalsIgnoreCase("leftover")) return;
             if(s.equalsIgnoreCase("playtime")) return;
 
-            Milestone m = new Milestone(s);
+            Milestone m = new Milestone(s, storage.getBoolean(s + ".repeating"));
             if(storage.contains(s + ".req")) storage.getConfigurationSection(s + ".req").getKeys(false).forEach(re -> {
                 m.requirements.add(MilestoneRewards.availableRequirements.get(storage.getString(s + ".req." + re + ".type")).fromData(storage, s + ".req." + re));
             });
@@ -44,7 +44,8 @@ public class PluginLoader {
             });
 
             if(storage.contains(s + ".players")) storage.getConfigurationSection(s + ".players").getKeys(false).forEach(i -> {
-                m.completed.put(i, storage.getInt(s + ".players." + i));
+                m.completed.put(i, storage.getInt(s + ".players.comp." + i));
+                m.timesCompleted.put(i, storage.getInt(s + ".players.times." + i));
             });
 
             m.commands = storage.getStringList(s + ".commands");
@@ -77,13 +78,15 @@ public class PluginLoader {
 
         MilestoneRewards.milestones.values().forEach(m -> {
             AtomicInteger i = new AtomicInteger(0);
-            m.requirements.forEach(req -> req.saveData(storage, m.name + ".req." + i.getAndIncrement()));
+            storage.set("milestones." + m.name + ".repeating", m.isRepeating);
+            m.requirements.forEach(req -> req.saveData(storage, "milestones." + m.name + ".req." + i.getAndIncrement()));
 
             i.set(0);
-            m.rewards.forEach(item -> storage.set(m.name + ".items." + i.getAndIncrement(), item));
+            m.rewards.forEach(item -> storage.set("milestones." + m.name + ".items." + i.getAndIncrement(), item));
 
-            m.completed.forEach((p, c) -> storage.set(m.name + ".players." + p, c));
-            storage.set(m.name + ".commands", m.commands);
+            m.completed.forEach((p, c) -> storage.set("milestones." + m.name + ".players.comp." + p, c));
+            m.timesCompleted.forEach((p, c) -> storage.set("milestones." + m.name + ".players.times." + p, c));
+            storage.set("milestones." + m.name + ".commands", m.commands);
         });
 
         try{

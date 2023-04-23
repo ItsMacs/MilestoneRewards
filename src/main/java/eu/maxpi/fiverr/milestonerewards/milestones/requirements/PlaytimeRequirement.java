@@ -1,5 +1,6 @@
 package eu.maxpi.fiverr.milestonerewards.milestones.requirements;
 
+import eu.maxpi.fiverr.milestonerewards.milestones.Milestone;
 import eu.maxpi.fiverr.milestonerewards.utils.PlaytimeManager;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -15,17 +16,17 @@ public class PlaytimeRequirement extends MilestoneRequirement {
     }
 
     @Override
-    public boolean isComplete(Player p) {
-        return PlaytimeManager.getTime(p) >= playTimeRequired;
+    public boolean isComplete(Player p, Milestone m) {
+        return PlaytimeManager.getTime(p) >= (playTimeRequired * (m.timesCompleted.getOrDefault(p.getName(), 0) + 1));
     }
 
     @Override
     public MilestoneRequirement create(Player p, String[] args) {
-        if(args.length < 6) return null;
+        if(args.length < 5) return null;
 
         long l;
         try{
-            l = Long.parseLong(args[5]);
+            l = Long.parseLong(args[4]);
         }catch (Exception e){
             return null;
         }

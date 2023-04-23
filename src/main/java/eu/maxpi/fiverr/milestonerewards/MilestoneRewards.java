@@ -62,6 +62,8 @@ public final class MilestoneRewards extends JavaPlugin {
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             milestones.values().forEach(Milestone::tryGive);
             milestones.values().forEach(Milestone::handout);
+
+            milestones.values().stream().filter(m -> m.isRepeating).forEach(m -> m.completed.values().removeIf(i -> i == 2));
         }, 0L, 10L);
 
         Bukkit.getScheduler().runTaskTimer(this, PlaytimeManager::manage, 0L, 20L);

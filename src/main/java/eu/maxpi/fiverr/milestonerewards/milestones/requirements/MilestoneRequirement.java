@@ -1,5 +1,6 @@
 package eu.maxpi.fiverr.milestonerewards.milestones.requirements;
 
+import eu.maxpi.fiverr.milestonerewards.milestones.Milestone;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -13,7 +14,7 @@ public abstract class MilestoneRequirement {
         this.type = s;
     }
 
-    public abstract boolean isComplete(Player p);
+    public abstract boolean isComplete(Player p, Milestone m);
 
     public abstract MilestoneRequirement create(Player p, String[] args);
 

@@ -27,8 +27,9 @@ public class MilestoneCMD implements CommandExecutor {
         }
 
         switch (args[0].toLowerCase()){
-            case "create" -> { // /milestone create <name>
-                if(args.length != 2){
+
+            case "create" -> { // /milestone create <name> <repeating true/false>
+                if(args.length != 3){
                     sender.sendMessage(PluginLoader.lang.get("milestone-usage"));
                     return true;
                 }
@@ -38,7 +39,9 @@ public class MilestoneCMD implements CommandExecutor {
                     return true;
                 }
 
-                MilestoneRewards.milestones.put(args[1].toLowerCase(), new Milestone(args[1]));
+                boolean repeating = args[2].equalsIgnoreCase("true");
+
+                MilestoneRewards.milestones.put(args[1].toLowerCase(), new Milestone(args[1], repeating));
                 sender.sendMessage(PluginLoader.lang.get("milestone-created"));
             }
 

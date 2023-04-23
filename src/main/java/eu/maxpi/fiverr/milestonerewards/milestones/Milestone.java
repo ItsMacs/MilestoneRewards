@@ -17,6 +17,7 @@ import java.util.List;
 public class Milestone {
 
     public String name;
+    public boolean isRepeating = false;
     public List<ItemStack> rewards = new ArrayList<>();
     public List<String> commands = new ArrayList<>();
 
@@ -24,19 +25,23 @@ public class Milestone {
     //V: State (0 = Not completed, shouldn't be set; 1 = Completed but objects not redeemed; 2 = Completed and redeemed
     public HashMap<String, Integer> completed = new HashMap<>();
 
+    public HashMap<String, Integer> timesCompleted = new HashMap<>();
+
     public List<MilestoneRequirement> requirements = new ArrayList<>();
 
-    public Milestone(String name){
+    public Milestone(String name, boolean repeating){
         this.name = name;
+        this.isRepeating = repeating;
     }
 
     public void tryGive(){
         if(requirements.size() == 0) return;
 
         Bukkit.getOnlinePlayers().stream().filter(p -> completed.getOrDefault(p.getUniqueId().toString(), 0) == 0).forEach(p -> {
-            if(requirements.stream().anyMatch(req -> !req.isComplete(p))) return;
+            if(requirements.stream().anyMatch(req -> !req.isComplete(p, this))) return;
 
             completed.put(p.getUniqueId().toString(), 1);
+            timesCompleted.put(p.getName(), timesCompleted.getOrDefault(p.getName(), 0) + 1);
             p.sendMessage(PluginLoader.lang.get("milestone-reached").replace("%milestone%", name));
             p.sendTitle(PluginLoader.lang.get("milestone-reached-title"), PluginLoader.lang.get("milestone-reached-subtitle"), 15, 60, 15);
             p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);

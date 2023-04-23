@@ -1,5 +1,6 @@
 package eu.maxpi.fiverr.milestonerewards.milestones.requirements;
 
+import eu.maxpi.fiverr.milestonerewards.milestones.Milestone;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,7 +16,7 @@ public class GetItemRequirement extends MilestoneRequirement{
     }
 
     @Override
-    public boolean isComplete(Player p) {
+    public boolean isComplete(Player p, Milestone m) {
         return Arrays.stream(p.getInventory().getContents()).anyMatch(i -> i.isSimilar(item));
     }
 
